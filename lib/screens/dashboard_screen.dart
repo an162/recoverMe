@@ -1,29 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardScreen extends StatelessWidget {
+  Future<void> _logout(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', false);
+    Navigator.pushReplacementNamed(context, '/login');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.menu, color: Colors.black),
-          onPressed: () {
-            // Add functionality for menu
-          },
-        ),
-      
+        title: const Text('Dashboard'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () => _logout(context),
+          ),
+        ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child:
-                Text(
-                  "Hi, Mert 👋",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-      ));}}
+      body: Center(
+        child: const Text(
+          "Welcome to the Dashboard!",
+          style: TextStyle(fontSize: 20),
+        ),
+      ),
+    );
+  }
+}

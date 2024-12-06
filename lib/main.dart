@@ -10,17 +10,30 @@ import 'package:project/screens/onboarding_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Check if onboarding has been completed
+  // Initialize shared preferences
   final prefs = await SharedPreferences.getInstance();
-  final bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
 
-  runApp(MyApp(isFirstTime: isFirstTime));
+  // Determine initial screen
+  final bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
+  final bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+
+  // Set the initial route
+  String initialRoute;
+  if (isFirstTime) {
+    initialRoute = '/onboarding';
+  } else if (isLoggedIn) {
+    initialRoute = '/dashboard';
+  } else {
+    initialRoute = '/login';
+  }
+
+  runApp(MyApp(initialRoute: initialRoute));
 }
 
 class MyApp extends StatelessWidget {
-  final bool isFirstTime;
+  final String initialRoute;
 
-  const MyApp({required this.isFirstTime});
+  const MyApp({required this.initialRoute});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +47,7 @@ class MyApp extends StatelessWidget {
         '/forgotPassword': (context) => ForgotPasswordScreen(),
         '/onboarding': (context) => OnboardingScreen(),
       },
-      initialRoute: isFirstTime ? '/onboarding' : '/login',
+      initialRoute: initialRoute,
     );
   }
 }

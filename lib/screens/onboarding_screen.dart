@@ -84,7 +84,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               right: 50,
               child: ElevatedButton(
                 onPressed: _completeOnboarding,
-                child: Text("Get Started"),
+                child: Text(
+                  "Get Started",
+                  style: TextStyle(color: Colors.white),
+                ),
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 15),
                   backgroundColor: Colors.blue.shade800,
