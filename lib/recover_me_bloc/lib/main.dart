@@ -12,6 +12,13 @@ import 'screens/profile_page.dart';
 import 'screens/settings_page.dart';
 import 'screens/achievements.dart';
 import 'screens/sober_streak.dart';
+import 'screens/login_screen.dart';
+import 'screens/create_account_screen.dart';
+import 'screens/choose_addiction_screen.dart';
+import 'screens/forgot_password_screen.dart';
+import 'screens/onboarding_screen.dart';
+import 'cubits/login_bloc/login_bloc.dart';
+import 'cubits/create_account/create_account_bloc.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,6 +37,12 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (_) => SoberCubit(SoberRepository(DatabaseHelper())),
         ),
+        BlocProvider<LoginBloc>(
+          create: (context) => LoginBloc(dbHelper: DatabaseHelper()),
+        ),
+        BlocProvider<CreateAccountBloc>(
+          create: (context) => CreateAccountBloc(dbHelper: DatabaseHelper()),
+        ),
       ],
       child: MaterialApp(
         title: 'RecoverMe',
@@ -37,16 +50,17 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        initialRoute: '/',
+        initialRoute: '/onboarding',
         routes: {
           '/': (context) => const HomePage(userName: 'User', selectedAddiction: 'None'),
           '/addHabit': (context) => const AddHabitPage(),
           '/explore': (context) => const ExploreScreen(),
           '/profile': (context) => const ProfilePage(),
           '/settings': (context) => const SettingsPage(),
-          
-          // '/achievements': (context) => const AchievementsPage(),
-          // '/soberStreak': (context) => const SoberStreakPage(currentStreak: 30), // Sample value
+          '/login': (context) => LoginScreen(),
+          '/createAccount': (context) => CreateAccountScreen(),
+          '/chooseAddiction': (context) => ChooseAddictionScreen(email: ''),
+          '/onboarding': (context) => OnboardingScreen(),
         },
       ),
     );
